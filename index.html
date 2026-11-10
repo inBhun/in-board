@@ -5,7 +5,7 @@
 <meta name="robots" content="noindex, nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<title>브릭인 아이디어 보드 6.1 · 동기화 v4</title>
+<title>브릭인 아이디어 보드 6.1 · 동기화 v5</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&display=swap">
 <style>
 :root{--bg:#f2f4fb;--dot:#d5daee;--panel:#fff;--ink:#23263a;--mute:#7b8094;--line:#e3e6f2;--bd:#b9c0da;--acc:#5b6cff;--accs:rgba(91,108,255,.28);--accw:rgba(91,108,255,.07);--ok:#25a56a;--bad:#e5484d;--bar:rgba(255,255,255,.7);--pm:100%;--tm:46%;--hov:rgba(91,108,255,.1);
@@ -149,7 +149,7 @@ body.sh #side{display:none}#top h1{display:none}.bar button{width:30px;height:30
 </head>
 <body class="sh">
 <div id="top">
-<div class="t1"><button class="b" id="sbt" title="사이드바 열기/닫기">☰</button><h1>🧱 브릭인 보드 <small style="font-weight:400;color:var(--mute)">6.1 영상 재생 개선 · 동기화 v4</small></h1></div>
+<div class="t1"><button class="b" id="sbt" title="사이드바 열기/닫기">☰</button><h1>🧱 브릭인 보드 <small style="font-weight:400;color:var(--mute)">6.1 영상 재생 개선 · 동기화 v5</small></h1></div>
 <div class="t2"><input id="q" placeholder="🔍 검색  (#태그 도 가능)"><button class="b" id="gs" title="전체 보드 검색">🔎</button><button class="b pri" id="add" title="카드 추가">＋ 추가</button></div>
 <div class="t3">
 <span class="g2"><button class="b" id="dw" title="색연필 (메모·이미지 위에 그리기)">🖍</button><button class="b" id="sm" title="여러 개 선택 모드 (터치용) · PC는 빈 곳을 끌면 돼요">⬚</button><button class="b" id="un" title="실행 취소 (Ctrl+Z)">↶</button><button class="b" id="re" title="다시 실행 (Ctrl+Y)">↷</button></span>
@@ -297,8 +297,9 @@ r.appendChild(h("button",{className:"b",text:"⬇ 서버 → 이 기기로 받�
 if(CF)r.appendChild(h("button",{className:"b pri",text:"⚖ 충돌 비교·선택",onclick:conflictModal}));
 r.appendChild(h("button",{className:"b",text:"🗂 자동 백업",onclick:backupModal}));r.appendChild(h("button",{className:"b",text:"로그아웃",onclick:function(){ask("로그아웃할까요? 이 기기의 데이터는 그대로 남아요.",function(){sbOut();closeM()})}}));c.appendChild(r)}
 else{var em=h("input",{type:"text",placeholder:"이메일",style:"width:100%;margin:4px 0"}),pw=h("input",{type:"password",placeholder:"비밀번호 (6자 이상)",style:"width:100%;margin:4px 0"}),msgE=h("div",{style:"font-size:12px;color:var(--bad);min-height:16px;margin:4px 0"});
-var go=function(sg){var e=em.value.trim(),p=pw.value;if(!e||p.length<6){msgE.textContent="이메일과 6자 이상 비밀번호를 입력해 주세요.";return}msgE.style.color="var(--mute)";msgE.textContent="처리 중…";sbLogin(e,p,sg,function(t){msgE.style.color="var(--mute)";msgE.textContent=t}).catch(function(x){msgE.style.color="var(--bad)";msgE.textContent="❌ "+msg(x)+(/already|registered|exists/i.test(msg(x))?" → 이미 가입된 이메일이에요. ‘로그인’을 눌러 주세요.":"")})};
-P("이 기기의 데이터를 서버에 연결해 PC와 폰이 같은 보드를 보게 해요. 처음이면 ‘가입’, 이미 계정이 있으면 ‘로그인’을 누르세요.");c.appendChild(em);c.appendChild(pw);c.appendChild(msgE);
+em.setAttribute("autocapitalize","none");em.setAttribute("autocorrect","off");em.setAttribute("autocomplete","email");em.spellcheck=false;pw.setAttribute("autocapitalize","none");pw.setAttribute("autocorrect","off");
+var go=function(sg){var e=em.value.trim().toLowerCase(),p=pw.value;if(!e||p.length<6){msgE.textContent="이메일과 6자 이상 비밀번호를 입력해 주세요.";return}msgE.style.color="var(--mute)";msgE.textContent="처리 중…";sbLogin(e,p,sg,function(t){msgE.style.color="var(--mute)";msgE.textContent=t}).catch(function(x){msgE.style.color="var(--bad)";msgE.textContent="❌ "+msg(x)+(/already|registered|exists/i.test(msg(x))?" → 이미 가입된 이메일이에요. ‘로그인’을 눌러 주세요.":/Invalid login/i.test(msg(x))?" → 이메일 철자나 비밀번호가 가입 때와 달라요. ‘비밀번호 보이기’로 확인해 주세요. (가입한 적 없는 이메일이면 ‘가입’을 눌러 주세요)":"")})};
+P("이 기기의 데이터를 서버에 연결해 PC와 폰이 같은 보드를 보게 해요. 처음이면 ‘가입’, 이미 계정이 있으면 ‘로그인’을 누르세요.");c.appendChild(em);c.appendChild(pw);c.appendChild(h("label",{style:"font-size:12px;display:block;margin:2px 0"},h("input",{type:"checkbox",style:"width:auto",onchange:function(){pw.type=this.checked?"text":"password"}}),h("span",{text:" 비밀번호 보이기 (오타 확인용)"})));c.appendChild(msgE);
 var tout=h("div",{style:"font-size:12px;margin:8px 0;line-height:1.5"});c.appendChild(h("div",{style:"display:flex;gap:6px;flex-wrap:wrap"},h("button",{className:"b pri",text:"로그인",onclick:function(){go(0)}}),h("button",{className:"b",text:"가입",onclick:function(){go(1)}}),h("button",{className:"b",text:"연결 테스트",onclick:function(){sbTest(tout)}})));c.appendChild(tout)}})}
 /*SB-END*/
 /* ---- helpers ---- */
