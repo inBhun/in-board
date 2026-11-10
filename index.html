@@ -5,7 +5,7 @@
 <meta name="robots" content="noindex, nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<title>브릭인 아이디어 보드 6.1 · 동기화 v3</title>
+<title>브릭인 아이디어 보드 6.1 · 동기화 v4</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&display=swap">
 <style>
 :root{--bg:#f2f4fb;--dot:#d5daee;--panel:#fff;--ink:#23263a;--mute:#7b8094;--line:#e3e6f2;--bd:#b9c0da;--acc:#5b6cff;--accs:rgba(91,108,255,.28);--accw:rgba(91,108,255,.07);--ok:#25a56a;--bad:#e5484d;--bar:rgba(255,255,255,.7);--pm:100%;--tm:46%;--hov:rgba(91,108,255,.1);
@@ -149,7 +149,7 @@ body.sh #side{display:none}#top h1{display:none}.bar button{width:30px;height:30
 </head>
 <body class="sh">
 <div id="top">
-<div class="t1"><button class="b" id="sbt" title="사이드바 열기/닫기">☰</button><h1>🧱 브릭인 보드 <small style="font-weight:400;color:var(--mute)">6.1 영상 재생 개선 · 동기화 v3</small></h1></div>
+<div class="t1"><button class="b" id="sbt" title="사이드바 열기/닫기">☰</button><h1>🧱 브릭인 보드 <small style="font-weight:400;color:var(--mute)">6.1 영상 재생 개선 · 동기화 v4</small></h1></div>
 <div class="t2"><input id="q" placeholder="🔍 검색  (#태그 도 가능)"><button class="b" id="gs" title="전체 보드 검색">🔎</button><button class="b pri" id="add" title="카드 추가">＋ 추가</button></div>
 <div class="t3">
 <span class="g2"><button class="b" id="dw" title="색연필 (메모·이미지 위에 그리기)">🖍</button><button class="b" id="sm" title="여러 개 선택 모드 (터치용) · PC는 빈 곳을 끌면 돼요">⬚</button><button class="b" id="un" title="실행 취소 (Ctrl+Z)">↶</button><button class="b" id="re" title="다시 실행 (Ctrl+Y)">↷</button></span>
@@ -244,11 +244,12 @@ if(CF)r.appendChild(h("button",{className:"b pri",text:"⚖ 충돌 비교·선�
 c.appendChild(r);c.appendChild(h("small",{text:"PC와 폰 모두 claude.ai에 같은 계정으로 로그인한 뒤 https://claude.ai/artifact/S9eaDUJAH1PM6NmXoohVuD 링크로 열어야 동기화돼요. 다운로드한 HTML 파일로 열면 동기화가 되지 않아요.",style:"display:block;margin-top:10px;color:var(--mute)"}))})}
 $("cs").onclick=function(){if(typeof claude!=="undefined"&&claude.use)syncModal();else sbModal()};
 /*SB-START*/
+function msg(e){return(e&&(e.message||e.code))||String(e)}
 var SB_URL="https://hotasagkpmzxlhrdcbqu.supabase.co",SB_KEY="sb_publishable_-KtqIz-wydsausPturl2iw_eumVctux",SB={on:0,busy:0},SBU={},SBQ=[],sbT=null;
 function sbSet(d){SB.token=d.access_token;SB.rt=d.refresh_token;SB.exp=Date.now()+(d.expires_in||3600)*1000;if(d.user){SB.uid=d.user.id;SB.email=d.user.email}SB.on=1;try{localStorage.setItem("brickin-sb",JSON.stringify({t:SB.token,r:SB.rt,e:SB.exp,u:SB.uid,m:SB.email}))}catch(e){}}
 function sbOut(){SB.on=0;SB.token=null;try{localStorage.removeItem("brickin-sb")}catch(e){}cloud="local";st()}
 async function sbF(url,o){var ac=typeof AbortController!=="undefined"?new AbortController():null,t=setTimeout(function(){if(ac)ac.abort()},15000);o=Object.assign({},o,ac?{signal:ac.signal}:{});try{return await fetch(url,o)}catch(e){if(e&&e.name==="AbortError")throw new Error("서버 응답이 없어요 (15초). 인터넷 연결이나 주소를 확인해 주세요.");throw new Error("서버에 연결하지 못했어요: "+(e&&e.message||e)+" (광고 차단·VPN·네트워크를 확인해 주세요)")}finally{clearTimeout(t)}}
-function sbTest(out){out.textContent="확인 중…";sbF(SB_URL+"/auth/v1/settings",{headers:{apikey:SB_KEY}}).then(async function(r){var d={};try{d=await r.json()}catch(e){}out.textContent=r.ok?"✅ 서버 연결 OK · 이메일 인증: "+(d.mailer_autoconfirm===true?"자동 승인(꺼짐) → 가입 가능":d.mailer_autoconfirm===false?"켜져 있음 → Supabase에서 Confirm email을 꺼 주세요":"확인 불가")+(d.disable_signup?" · ⚠ 신규 가입이 막혀 있어요":""):"⚠ 서버 응답 오류 "+r.status+" "+(d.message||d.msg||d.error||"")},function(e){out.textContent="❌ "+msg(e)})}
+function sbTest(out){out.textContent="확인 중…";sbF(SB_URL+"/auth/v1/settings",{headers:{apikey:SB_KEY}}).then(async function(r){var d={};try{d=await r.json()}catch(e){}out.textContent=r.ok?(d.external&&d.external.email===false?"❌ 이메일 가입(Email provider)이 꺼져 있어요 → Supabase에서 Email provider를 켜 주세요":"✅ 서버 연결 OK · 이메일 가입 켜짐")+" · 이메일 인증: "+(d.mailer_autoconfirm===true?"자동 승인(꺼짐) → 가입 가능":d.mailer_autoconfirm===false?"켜져 있음 → Supabase에서 Confirm email을 꺼 주세요":"확인 불가")+(d.disable_signup?" · ⚠ 신규 가입이 막혀 있어요":""):"⚠ 서버 응답 오류 "+r.status+" "+(d.message||d.msg||d.error||"")},function(e){out.textContent="❌ "+msg(e)})}
 async function sbAuth(path,body){var r=await sbF(SB_URL+path,{method:"POST",headers:{apikey:SB_KEY,"Content-Type":"application/json"},body:JSON.stringify(body)}),d={};try{d=await r.json()}catch(e){}if(!r.ok)throw new Error(d.msg||d.error_description||d.message||("오류 "+r.status));return d}
 async function sbRefresh(){var d=await sbAuth("/auth/v1/token?grant_type=refresh_token",{refresh_token:SB.rt});sbSet(d)}
 async function sbReq(m,p,b,hx){if(SB.exp-Date.now()<60000)await sbRefresh();var hd=Object.assign({apikey:SB_KEY,Authorization:"Bearer "+SB.token},hx||{});if(!hd["Content-Type"])hd["Content-Type"]="application/json";return sbF(SB_URL+p,{method:m,headers:hd,body:b===undefined?undefined:(typeof Blob!=="undefined"&&b instanceof Blob?b:JSON.stringify(b))})}
